@@ -15,7 +15,7 @@ def serve():
         ('grpc.max_send_message_length', 10 * 1024 * 1024),   
         ('grpc.max_receive_message_length', 10 * 1024 * 1024) 
     ])
-    grpcservice_pb2_grpc .add_GrpcServiceServicer_to_server(GrpcService(), server)
+    grpcservice_pb2_grpc.add_GrpcServiceServicer_to_server(GrpcService(), server)
     server.add_insecure_port("[::]:50051")
     server.start()
     log.info("GRPC server running")

@@ -1,11 +1,19 @@
 from pathlib import Path
 import numpy as np
-from ai_model_handler import AIModelHandler
-import grpcservice_pb2, grpcservice_pb2_grpc
+
+if __name__ == "grpc_service":
+    from ai_model_handler import AIModelHandler
+    import grpcservice_pb2,  grpcservice_pb2_grpc
+else:
+    # Add your custom import paths here
+    from AI.grpc_ai_service.ai_model_handler import AIModelHandler
+    import AI.grpc_ai_service.grpcservice_pb2 as grpcservice_pb2, AI.grpc_ai_service.grpcservice_pb2_grpc as grpcservice_pb2_grpc
+
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
     
     def __init__(self):
+        print(__name__)
         super().__init__()
         self.model_handlers = {1 : AIModelHandler(1),
                                2 : AIModelHandler(2)}
@@ -49,8 +57,7 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
             input_width=inputs[0].shape[3]
         )
 
-# gRPC helpers
-
+# --- gRPC helpers ---
 def ndarray_to_proto(arr: np.ndarray) -> grpcservice_pb2.NDArray:
     return grpcservice_pb2.NDArray(
         data=arr.tobytes(),
