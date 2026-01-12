@@ -1,0 +1,49 @@
+syntax = "proto3";
+package grpcservice;
+
+message NDArray {
+  bytes data = 1;
+  repeated int64 shape = 2;
+  string dtype = 3;
+}
+message NDArrayList {
+  repeated NDArray arr = 1;
+}
+
+message RunRequest {   
+  int32 model_id = 1;    
+  NDArray input = 2;       
+  bytes run_options = 3;
+}
+
+message RunResponse {
+  NDArrayList output = 1;
+  repeated string output_names = 3;       
+}
+
+message ModelInfoRequest {
+  int32 model_id = 1;
+}
+
+message ModelInfoResponse {
+  string modelAuthor = 1;
+  repeated string output_names = 2;
+  string input_names = 3;
+  int32 input_height = 4;
+  int32 input_width = 5;
+  int32 input_channels = 6;
+  }
+
+message LoadModelRequest {
+  string modelPath = 1;
+}
+
+message LoadModelResponse {
+  bool loadStatus = 1;
+}
+
+service GrpcService {
+  rpc LoadModel(LoadModelRequest) returns (LoadModelResponse);
+  rpc GetModelInfo(ModelInfoRequest) returns (ModelInfoResponse);
+  rpc Run (RunRequest) returns (RunResponse);
+}
