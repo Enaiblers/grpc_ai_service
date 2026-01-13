@@ -8,8 +8,8 @@ log.setLevel(logging.DEBUG)
 
 class AIModelHandler:
     
-    def __init__(self, handler_id: int) -> None:
-        self._handler_id = handler_id
+    def __init__(self, model_uuid: str) -> None:
+        self._model_uuid = model_uuid
         self._model = None
         self.output_names: list[str] = []
         self.input_name: str = ""

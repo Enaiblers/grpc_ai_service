@@ -1,6 +1,6 @@
 from pathlib import Path
 import numpy as np
-
+import logging
 if __name__ == "grpc_service":
     from ai_model_handler import AIModelHandler
     import grpcservice_pb2,  grpcservice_pb2_grpc
@@ -9,27 +9,33 @@ else:
     from AI.grpc_ai_service.ai_model_handler import AIModelHandler
     import AI.grpc_ai_service.grpcservice_pb2 as grpcservice_pb2, AI.grpc_ai_service.grpcservice_pb2_grpc as grpcservice_pb2_grpc
 
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())
+log.setLevel(logging.DEBUG)
+
+# Add your custom model base path here with uuid as folder names
+MODEL_BASE_PATH = Path("/media/m2ssd/exported_models/grpc_models/")
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
-    
-    def __init__(self):
-        print(__name__)
-        super().__init__()
-        self.model_handlers = {1 : AIModelHandler(1),
-                               2 : AIModelHandler(2)}
-        boundary_model_path = Path("/home/slidemanager/david/boundary.onnx")
-        boundary_model_path.resolve()
-        object_detector_model_path = Path("/media/m2ssd/exported_models/yolov8_230629/detector.onnx")   
-        object_detector_model_path.resolve()
 
-        self.model_handlers[1].load_model(boundary_model_path)
-        self.model_handlers[2].load_model(object_detector_model_path) 
+    def __init__(self):
+        super().__init__()
+        self.model_handlers = {}
         
+        # TODO: Choose which model file to use if more than one
+        onnx_files = MODEL_BASE_PATH.rglob("*.onnx")
+        log.info(f"Found {len(list(onnx_files))} model files.")
+        for path in MODEL_BASE_PATH.rglob("*.onnx"):
+            uuid = path.parent.name
+            log.info(f"Found model file: {path} with UUID: {path.parent.name}")
+            self.model_handlers[uuid] = AIModelHandler(model_uuid=uuid)
+            self.model_handlers[uuid].load_model(path)
+            
     def Run(self, request, context):
 
         model_handler = None
         for x in self.model_handlers : 
-            if self.model_handlers[x]._handler_id == request.model_id :
+            if self.model_handlers[x]._model_uuid == request.model_uuid :
                 model_handler = self.model_handlers[x]
 
         input_tensor = proto_to_ndarray(request.input)
@@ -44,7 +50,7 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
     def GetModelInfo(self, request, context):
         model_handler = None
         for x in self.model_handlers : 
-            if self.model_handlers[x]._handler_id == request.model_id :
+            if self.model_handlers[x]._model_uuid == request.model_uuid :
                 model_handler = self.model_handlers[x]
 
         inputs = model_handler._model.get_inputs()

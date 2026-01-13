@@ -11,7 +11,7 @@ message NDArrayList {
 }
 
 message RunRequest {   
-  int32 model_id = 1;    
+  string model_uuid = 1;    
   NDArray input = 2;       
   bytes run_options = 3;
 }
@@ -22,7 +22,7 @@ message RunResponse {
 }
 
 message ModelInfoRequest {
-  int32 model_id = 1;
+  string model_uuid = 1;
 }
 
 message ModelInfoResponse {
