@@ -9,11 +9,11 @@ else:
     from AI.grpc_ai_service.ai_model_handler import AIModelHandler
     import AI.grpc_ai_service.grpcservice_pb2 as grpcservice_pb2, AI.grpc_ai_service.grpcservice_pb2_grpc as grpcservice_pb2_grpc
 
+
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-# Add your custom model base path here with uuid as folder names
 MODEL_BASE_PATH = Path("/media/m2ssd/exported_models/grpc_models/")
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
@@ -23,9 +23,10 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
         self.model_handlers = {}
         
         # TODO: Choose which model file to use if more than one
-        onnx_files = MODEL_BASE_PATH.rglob("*.onnx")
-        log.info(f"Found {len(list(onnx_files))} model files.")
-        for path in MODEL_BASE_PATH.rglob("*.onnx"):
+        onnx_files = list(MODEL_BASE_PATH.rglob("*.onnx"))
+        log.info(f"Found {len(onnx_files)} model files.")
+
+        for path in onnx_files:
             uuid = path.parent.name
             log.info(f"Found model file: {path} with UUID: {path.parent.name}")
             self.model_handlers[uuid] = AIModelHandler(model_uuid=uuid)
@@ -40,8 +41,10 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
 
         input_tensor = proto_to_ndarray(request.input)
         input_feed = { model_handler.input_name : input_tensor }
-    
+
+        log.info(f"Running inference with model_uuid: {model_handler._model_uuid}")
         result = model_handler.run(None,input_feed) 
+        
         return grpcservice_pb2.RunResponse(
             output_names= model_handler.output_names,
             output=ndarraylist_to_proto(result)
@@ -52,6 +55,7 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
         for x in self.model_handlers : 
             if self.model_handlers[x]._model_uuid == request.model_uuid :
                 model_handler = self.model_handlers[x]
+                log.info(f"Model info request for model_uuid: {request.model_uuid} found.")
 
         inputs = model_handler._model.get_inputs()
         return grpcservice_pb2.ModelInfoResponse(
