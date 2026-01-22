@@ -6,8 +6,8 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
+
 class AIModelHandler:
-    
     def __init__(self, model_uuid: str) -> None:
         self._model_uuid = model_uuid
         self._model = None
@@ -21,9 +21,9 @@ class AIModelHandler:
         self._model = ort.InferenceSession(
             model_path, None, providers=execution_providers
         )
-        if self._model is None :
+        if self._model is None:
             print("Could not load model")
-            return False 
+            return False
         try:
             self._model_author = self._model.get_modelmeta().custom_metadata_map[
                 "author"

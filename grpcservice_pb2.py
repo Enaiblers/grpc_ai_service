@@ -9,44 +9,57 @@ from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
+
 _runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC,
-    6,
-    31,
-    1,
-    '',
-    'grpcservice.proto'
+    _runtime_version.Domain.PUBLIC, 6, 31, 1, "", "grpcservice.proto"
 )
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11grpcservice.proto\x12\x0bgrpcservice\"5\n\x07NDArray\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x03\x12\r\n\x05\x64type\x18\x03 \x01(\t\"0\n\x0bNDArrayList\x12!\n\x03\x61rr\x18\x01 \x03(\x0b\x32\x14.grpcservice.NDArray\"Z\n\nRunRequest\x12\x12\n\nmodel_uuid\x18\x01 \x01(\t\x12#\n\x05input\x18\x02 \x01(\x0b\x32\x14.grpcservice.NDArray\x12\x13\n\x0brun_options\x18\x03 \x01(\x0c\"M\n\x0bRunResponse\x12(\n\x06output\x18\x01 \x01(\x0b\x32\x18.grpcservice.NDArrayList\x12\x14\n\x0coutput_names\x18\x03 \x03(\t\"&\n\x10ModelInfoRequest\x12\x12\n\nmodel_uuid\x18\x01 \x01(\t\"\x96\x01\n\x11ModelInfoResponse\x12\x13\n\x0bmodelAuthor\x18\x01 \x01(\t\x12\x14\n\x0coutput_names\x18\x02 \x03(\t\x12\x13\n\x0binput_names\x18\x03 \x01(\t\x12\x14\n\x0cinput_height\x18\x04 \x01(\x05\x12\x13\n\x0binput_width\x18\x05 \x01(\x05\x12\x16\n\x0einput_channels\x18\x06 \x01(\x05\"%\n\x10LoadModelRequest\x12\x11\n\tmodelPath\x18\x01 \x01(\t\"\'\n\x11LoadModelResponse\x12\x12\n\nloadStatus\x18\x01 \x01(\x08\x32\xe2\x01\n\x0bGrpcService\x12J\n\tLoadModel\x12\x1d.grpcservice.LoadModelRequest\x1a\x1e.grpcservice.LoadModelResponse\x12M\n\x0cGetModelInfo\x12\x1d.grpcservice.ModelInfoRequest\x1a\x1e.grpcservice.ModelInfoResponse\x12\x38\n\x03Run\x12\x17.grpcservice.RunRequest\x1a\x18.grpcservice.RunResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x11grpcservice.proto\x12\x0bgrpcservice"5\n\x07NDArray\x12\x0c\n\x04\x64\x61ta\x18\x01'
+    b" \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x03\x12\r\n\x05\x64type\x18\x03"
+    b' \x01(\t"0\n\x0bNDArrayList\x12!\n\x03\x61rr\x18\x01'
+    b' \x03(\x0b\x32\x14.grpcservice.NDArray"Z\n\nRunRequest\x12\x12\n\nmodel_uuid\x18\x01'
+    b" \x01(\t\x12#\n\x05input\x18\x02"
+    b" \x01(\x0b\x32\x14.grpcservice.NDArray\x12\x13\n\x0brun_options\x18\x03"
+    b' \x01(\x0c"M\n\x0bRunResponse\x12(\n\x06output\x18\x01'
+    b" \x01(\x0b\x32\x18.grpcservice.NDArrayList\x12\x14\n\x0coutput_names\x18\x03"
+    b' \x03(\t"&\n\x10ModelInfoRequest\x12\x12\n\nmodel_uuid\x18\x01'
+    b' \x01(\t"\x96\x01\n\x11ModelInfoResponse\x12\x13\n\x0bmodelAuthor\x18\x01'
+    b" \x01(\t\x12\x14\n\x0coutput_names\x18\x02"
+    b" \x03(\t\x12\x13\n\x0binput_names\x18\x03"
+    b" \x01(\t\x12\x14\n\x0cinput_height\x18\x04"
+    b" \x01(\x05\x12\x13\n\x0binput_width\x18\x05"
+    b" \x01(\x05\x12\x16\n\x0einput_channels\x18\x06"
+    b' \x01(\x05"%\n\x10LoadModelRequest\x12\x11\n\tmodelPath\x18\x01'
+    b" \x01(\t\"'\n\x11LoadModelResponse\x12\x12\n\nloadStatus\x18\x01"
+    b" \x01(\x08\x32\xe2\x01\n\x0bGrpcService\x12J\n\tLoadModel\x12\x1d.grpcservice.LoadModelRequest\x1a\x1e.grpcservice.LoadModelResponse\x12M\n\x0cGetModelInfo\x12\x1d.grpcservice.ModelInfoRequest\x1a\x1e.grpcservice.ModelInfoResponse\x12\x38\n\x03Run\x12\x17.grpcservice.RunRequest\x1a\x18.grpcservice.RunResponseb\x06proto3"
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'grpcservice_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "grpcservice_pb2", _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  DESCRIPTOR._loaded_options = None
-  _globals['_NDARRAY']._serialized_start=34
-  _globals['_NDARRAY']._serialized_end=87
-  _globals['_NDARRAYLIST']._serialized_start=89
-  _globals['_NDARRAYLIST']._serialized_end=137
-  _globals['_RUNREQUEST']._serialized_start=139
-  _globals['_RUNREQUEST']._serialized_end=229
-  _globals['_RUNRESPONSE']._serialized_start=231
-  _globals['_RUNRESPONSE']._serialized_end=308
-  _globals['_MODELINFOREQUEST']._serialized_start=310
-  _globals['_MODELINFOREQUEST']._serialized_end=348
-  _globals['_MODELINFORESPONSE']._serialized_start=351
-  _globals['_MODELINFORESPONSE']._serialized_end=501
-  _globals['_LOADMODELREQUEST']._serialized_start=503
-  _globals['_LOADMODELREQUEST']._serialized_end=540
-  _globals['_LOADMODELRESPONSE']._serialized_start=542
-  _globals['_LOADMODELRESPONSE']._serialized_end=581
-  _globals['_GRPCSERVICE']._serialized_start=584
-  _globals['_GRPCSERVICE']._serialized_end=810
+    DESCRIPTOR._loaded_options = None
+    _globals["_NDARRAY"]._serialized_start = 34
+    _globals["_NDARRAY"]._serialized_end = 87
+    _globals["_NDARRAYLIST"]._serialized_start = 89
+    _globals["_NDARRAYLIST"]._serialized_end = 137
+    _globals["_RUNREQUEST"]._serialized_start = 139
+    _globals["_RUNREQUEST"]._serialized_end = 229
+    _globals["_RUNRESPONSE"]._serialized_start = 231
+    _globals["_RUNRESPONSE"]._serialized_end = 308
+    _globals["_MODELINFOREQUEST"]._serialized_start = 310
+    _globals["_MODELINFOREQUEST"]._serialized_end = 348
+    _globals["_MODELINFORESPONSE"]._serialized_start = 351
+    _globals["_MODELINFORESPONSE"]._serialized_end = 501
+    _globals["_LOADMODELREQUEST"]._serialized_start = 503
+    _globals["_LOADMODELREQUEST"]._serialized_end = 540
+    _globals["_LOADMODELRESPONSE"]._serialized_start = 542
+    _globals["_LOADMODELRESPONSE"]._serialized_end = 581
+    _globals["_GRPCSERVICE"]._serialized_start = 584
+    _globals["_GRPCSERVICE"]._serialized_end = 810
 # @@protoc_insertion_point(module_scope)
