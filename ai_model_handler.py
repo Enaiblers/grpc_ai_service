@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+
 import onnxruntime as ort
 
 log = logging.getLogger(__name__)

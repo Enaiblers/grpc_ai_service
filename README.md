@@ -62,6 +62,10 @@ Typical integration steps:
 
 1. Add this repository as a submodule
 2. Install Python dependencies
+  - pip install grpcio
+  - pip install grpcio-health-checking
+  - pip install protobuf
+  - pip install grpcio-tools (for generating files from .proto)
 3. Start the gRPC inference server
 4. Configure the main system to send inference requests and monitor health
 

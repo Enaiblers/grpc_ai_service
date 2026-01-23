@@ -2,6 +2,7 @@
 # If you regenerate this file, all your changes will be lost.
 
 """Client and server classes corresponding to protobuf-defined services."""
+
 import grpc
 
 # WARNING: If you regenerate this file, following import block must be re-created. Please copy before regenerating.

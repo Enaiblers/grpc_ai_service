@@ -1,16 +1,17 @@
-from pathlib import Path
-import numpy as np
 import logging
+from pathlib import Path
+
+import numpy as np
 
 if __name__ == "grpc_service":
-    from ai_model_handler import AIModelHandler
     import grpcservice_pb2
     import grpcservice_pb2_grpc
+    from ai_model_handler import AIModelHandler
 else:
     # Add your custom import paths here
-    from AI.grpc_ai_service.ai_model_handler import AIModelHandler
     import AI.grpc_ai_service.grpcservice_pb2 as grpcservice_pb2
     import AI.grpc_ai_service.grpcservice_pb2_grpc as grpcservice_pb2_grpc
+    from AI.grpc_ai_service.ai_model_handler import AIModelHandler
 
 
 log = logging.getLogger(__name__)

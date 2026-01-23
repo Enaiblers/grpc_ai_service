@@ -1,13 +1,12 @@
-import os
 import logging
-from concurrent import futures
+import os
 import signal
+from concurrent import futures
 from typing import Any
+
 import grpc
-from grpc_health.v1 import health
-from grpc_health.v1 import health_pb2
-from grpc_health.v1 import health_pb2_grpc
 import grpcservice_pb2_grpc
+from grpc_health.v1 import health, health_pb2, health_pb2_grpc
 from grpc_service import GrpcService
 
 log = logging.getLogger(__name__)
