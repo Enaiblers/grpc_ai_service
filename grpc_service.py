@@ -19,13 +19,17 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-config = None
 try:
     with open("config.json", "r") as f:
         config = json.load(f)
-except FileNotFoundError as e:
-    log.error("config file not found")
-    raise e
+except FileNotFoundError:
+    log.error("config file not found! Will use example config")
+    config = {
+        "model_base_path": "",
+        "service_name": "grpcservice.GrpcService",
+        "max_send_message_length": 10485760,
+        "max_receive_message_length": 2097152,
+    }
 
 MODEL_BASE_PATH = Path(config["model_base_path"])
 
