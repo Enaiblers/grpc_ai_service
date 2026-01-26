@@ -19,8 +19,13 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-with open("config.json", "r") as f:
-    config = json.load(f)
+config = None
+try:
+    with open("config.json", "r") as f:
+        config = json.load(f)
+except FileNotFoundError as e:
+    log.error("config file not found")
+    raise e
 
 MODEL_BASE_PATH = Path(config["model_base_path"])
 

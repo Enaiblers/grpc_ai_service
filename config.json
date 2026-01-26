@@ -1,6 +1,0 @@
-{
-    "model_base_path": "", 
-    "service_name": "grpcservice.GrpcService",
-    "max_send_message_length": 10485760, # 10 MB
-    "max_receive_message_length": 2097152 # 2 MB
-}
