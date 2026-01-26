@@ -25,8 +25,8 @@ stream_handler = logging.StreamHandler(stream=sys.stdout)
 log.addHandler(stream_handler)
 
 
-send_message_length = 10485760 # 10 MB
-receive_message_length = 2097152 # 2 MB
+send_message_length = 10485760  # 10 MB
+receive_message_length = 2097152  # 2 MB
 
 TEST_MODEL_UUID = "test_model_uuid"
 
