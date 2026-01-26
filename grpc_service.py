@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 
@@ -18,7 +19,10 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-MODEL_BASE_PATH = Path("/media/m2ssd/exported_models/grpc_models/")
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+MODEL_BASE_PATH = Path(config["model_base_path"])
 
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):

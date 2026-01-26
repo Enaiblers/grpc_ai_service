@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import signal
@@ -13,15 +14,20 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-SERVICE_NAME = "grpcservice.GrpcService"
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+SERVICE_NAME = config["service_name"]
+send_message_length = config["max_send_message_length"]
+receive_message_length = config["max_receive_message_length"]
 
 
 def serve():
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=os.cpu_count()),
         options=[
-            ("grpc.max_send_message_length", 10 * 1024 * 1024),
-            ("grpc.max_receive_message_length", 10 * 1024 * 1024),
+            ("grpc.max_send_message_length", send_message_length),
+            ("grpc.max_receive_message_length", receive_message_length),
         ],
     )
     grpcservice_pb2_grpc.add_GrpcServiceServicer_to_server(GrpcService(), server)

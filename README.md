@@ -6,6 +6,11 @@ This repository contains a Python-based gRPC inference service used for running 
 
 The service is designed as a submodule that integrates into a larger system. Image data is sent to the service via gRPC, unpacked on the server, passed through an ONNX model for inference, and the result are returned to the caller. A health check mechanism is included so the main system can detect when the service is unavailable.
 
+### Quick steps
+- Install dependencies
+- Create config file
+- Setup main system
+- Start server
 
 ## Purpose
 
@@ -77,7 +82,16 @@ Typical integration steps:
 - **Warning**: If you do this changes made to solve imports issues will be lost. See file: [grpcservice_pb2_grpc](grpcservice_pb2_grpc.py) for further info.  
   Any changes you make yourself to grpcservice_pb2_grpc.py, grpcservice_pb2.py and grpcservice_pb2.pyi will also be lost.   
     
-
+## Config file
+- Add a config.json in the repo root with the following content:
+```
+{
+    "model_base_path": "", 
+    "service_name": "grpcservice.GrpcService",
+    "max_send_message_length": 10485760, # 10 MB
+    "max_receive_message_length": 2097152 # 2 MB
+}
+```
 ## Future Improvements
 
 - Extended health diagnostics

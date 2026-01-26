@@ -24,6 +24,10 @@ log = logging.getLogger(__name__)
 stream_handler = logging.StreamHandler(stream=sys.stdout)
 log.addHandler(stream_handler)
 
+
+send_message_length = 10485760 # 10 MB
+receive_message_length = 2097152 # 2 MB
+
 TEST_MODEL_UUID = "test_model_uuid"
 
 
@@ -32,8 +36,8 @@ def grpc_server():
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=os.cpu_count()),
         options=[
-            ("grpc.max_send_message_length", 10 * 1024 * 1024),
-            ("grpc.max_receive_message_length", 10 * 1024 * 1024),
+            ("grpc.max_send_message_length", send_message_length),
+            ("grpc.max_receive_message_length", receive_message_length),
         ],
     )
     add_GrpcServiceServicer_to_server(grpc_service.GrpcService(), server)
