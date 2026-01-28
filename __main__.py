@@ -3,6 +3,7 @@ import logging
 import os
 import signal
 from concurrent import futures
+from pathlib import Path
 from typing import Any
 
 import grpc
@@ -14,9 +15,16 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
-with open("config.json", "r") as f:
-    config = json.load(f)
+config_dir = os.path.dirname(os.path.realpath(__file__))
 
+try:
+    with open(f"{config_dir}/config.json", "r") as f:
+        config = json.load(f)
+except FileNotFoundError as e:
+    log.error("config file not found")
+    raise e
+
+model_base_path = Path(config["model_base_path"])
 SERVICE_NAME = config["service_name"]
 send_message_length = config["max_send_message_length"]
 receive_message_length = config["max_receive_message_length"]
@@ -30,7 +38,9 @@ def serve():
             ("grpc.max_receive_message_length", receive_message_length),
         ],
     )
-    grpcservice_pb2_grpc.add_GrpcServiceServicer_to_server(GrpcService(), server)
+    grpcservice_pb2_grpc.add_GrpcServiceServicer_to_server(
+        GrpcService(model_base_path), server
+    )
     health_servicer = health.HealthServicer(
         experimental_thread_pool=futures.ThreadPoolExecutor(max_workers=10),
     )

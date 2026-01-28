@@ -70,20 +70,20 @@ class ModelInfoResponse(_message.Message):
     __slots__ = (
         "modelAuthor",
         "output_names",
-        "input_names",
+        "input_name",
         "input_height",
         "input_width",
         "input_channels",
     )
     MODELAUTHOR_FIELD_NUMBER: _ClassVar[int]
     OUTPUT_NAMES_FIELD_NUMBER: _ClassVar[int]
-    INPUT_NAMES_FIELD_NUMBER: _ClassVar[int]
+    INPUT_NAME_FIELD_NUMBER: _ClassVar[int]
     INPUT_HEIGHT_FIELD_NUMBER: _ClassVar[int]
     INPUT_WIDTH_FIELD_NUMBER: _ClassVar[int]
     INPUT_CHANNELS_FIELD_NUMBER: _ClassVar[int]
     modelAuthor: str
     output_names: _containers.RepeatedScalarFieldContainer[str]
-    input_names: str
+    input_name: str
     input_height: int
     input_width: int
     input_channels: int
@@ -91,7 +91,7 @@ class ModelInfoResponse(_message.Message):
         self,
         modelAuthor: _Optional[str] = ...,
         output_names: _Optional[_Iterable[str]] = ...,
-        input_names: _Optional[str] = ...,
+        input_name: _Optional[str] = ...,
         input_height: _Optional[int] = ...,
         input_width: _Optional[int] = ...,
         input_channels: _Optional[int] = ...,

@@ -8,7 +8,7 @@ The service is designed as a submodule that integrates into a larger system. Ima
 
 ### Quick steps
 - Install dependencies
-- Create config file
+- Create config file - See instructions further down
 - Setup main system
 - Start server
 
@@ -30,6 +30,8 @@ The purpose of this service is to:
 1. The client sends preprocessed image data via a gRPC request
 2. The server unpacks and ONNX inference is run
 3. Detected objects are returned via gRPC
+
+
 
 ### Image Data Handling
 
@@ -53,18 +55,28 @@ The main system uses this endpoint to:
 ## Service Responsibilities
 
 - Load and manage the ONNX model
-- Accept and decode image data
 - Run inference 
 - Expose service health status
-- Graceful shutdown
 
 
 ## Integration as a Submodule
 
 This repository is intended to be used as a submodule within a larger system.
 
-Typical integration steps:
-
+### Prerequisites
+#### Model File Structure 
+- ONNX models are organized by UUID, with each model stored 
+in its own directory. The service uses the UUID to locate and load the correct model at runtime.
+- Each folder name must match the model’s UUID
+- The ONNX file must reside inside the corresponding UUID folder
+```
+models/
+├── <model_uuid_1>/
+│   ├── model.onnx
+├── <model_uuid_2>/
+    ├── model.onnx
+```
+### Integration steps
 1. Add this repository as a submodule
 2. Install Python dependencies
   - pip install grpcio
@@ -88,15 +100,17 @@ Typical integration steps:
 {
     "model_base_path": "", 
     "service_name": "grpcservice.GrpcService",
-    "max_send_message_length": 10485760, # 10 MB
-    "max_receive_message_length": 2097152 # 2 MB
+    "max_send_message_length": 10485760, # 10Mb
+    "max_receive_message_length": 2097152, # 2MB
+    "test_send_message_length": 10485760, 
+    "test_receive_message_length": 10485760 
 }
+
 ```
-## Future Improvements
+- The model_base_path is the directory of your model_uuid folders
 
-- Extended health diagnostics
-
-
-## License
-
-Add license information here.
+## Testing
+- From project root run: 
+```
+pytest TEST/test_grpc_ai_service.py
+```

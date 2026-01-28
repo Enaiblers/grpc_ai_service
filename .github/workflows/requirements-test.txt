@@ -5,3 +5,4 @@ protobuf
 pytest
 onnxruntime==1.12.1
 numpy~=1.24.4
+ultralytics

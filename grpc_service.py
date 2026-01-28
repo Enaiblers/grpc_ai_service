@@ -1,8 +1,10 @@
 import json
 import logging
+import os
 from pathlib import Path
 
 import numpy as np
+from grpc import StatusCode
 
 if __name__ == "grpc_service":
     import grpcservice_pb2
@@ -19,71 +21,89 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
+config_dir = os.path.dirname(os.path.realpath(__file__))
+
 try:
-    with open("config.json", "r") as f:
+    with open(f"{config_dir}/config.json", "r") as f:
         config = json.load(f)
-except FileNotFoundError:
-    log.error("config file not found! Will use example config")
-    config = {
-        "model_base_path": "",
-        "service_name": "grpcservice.GrpcService",
-        "max_send_message_length": 10485760,
-        "max_receive_message_length": 2097152,
-    }
+except FileNotFoundError as e:
+    log.error("config file not found!")
+    raise e
 
 MODEL_BASE_PATH = Path(config["model_base_path"])
 
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
-    def __init__(self):
+    def __init__(self, model_base_path):
         super().__init__()
-        self.model_handlers = {}
-
-        # TODO: Choose which model file to use if more than one
-        onnx_files = list(MODEL_BASE_PATH.rglob("*.onnx"))
-        log.info(f"Found {len(onnx_files)} model files.")
-
-        for path in onnx_files:
-            uuid = path.parent.name
-            log.info(f"Found model file: {path} with UUID: {path.parent.name}")
-            self.model_handlers[uuid] = AIModelHandler(model_uuid=uuid)
-            self.model_handlers[uuid].load_model(path)
+        self._model_base_path = model_base_path
+        self._model_handlers = self.load_model_handlers(model_base_path)
 
     def Run(self, request, context):
-
-        model_handler = None
-        for x in self.model_handlers:
-            if self.model_handlers[x]._model_uuid == request.model_uuid:
-                model_handler = self.model_handlers[x]
-
+        model_handler = self.find_model_handler(
+            self._model_handlers, request.model_uuid
+        )
+        if model_handler is None:
+            context.abort(
+                StatusCode.NOT_FOUND,
+                f"model_handler with uuid {request.model_uuid} could not be found",
+            )
         input_tensor = proto_to_ndarray(request.input)
         input_feed = {model_handler.input_name: input_tensor}
 
-        log.info(f"Running inference with model_uuid: {model_handler._model_uuid}")
+        log.debug(f"Running inference with model_uuid: {model_handler._model_uuid}")
         result = model_handler.run(None, input_feed)
-
         return grpcservice_pb2.RunResponse(
             output_names=model_handler.output_names, output=ndarraylist_to_proto(result)
         )
 
     def GetModelInfo(self, request, context):
-        model_handler = None
-        for x in self.model_handlers:
-            if self.model_handlers[x]._model_uuid == request.model_uuid:
-                model_handler = self.model_handlers[x]
-                log.info(
-                    f"Model info request for model_uuid: {request.model_uuid} found."
-                )
-
+        model_handler = self.find_model_handler(
+            self._model_handlers, request.model_uuid
+        )
+        if model_handler is None:
+            context.abort(
+                StatusCode.NOT_FOUND,
+                f"model_handler with uuid {request.model_uuid} could not be found",
+            )
         inputs = model_handler._model.get_inputs()
         return grpcservice_pb2.ModelInfoResponse(
-            input_names=model_handler.input_name,
+            input_name=model_handler.input_name,
             output_names=model_handler.output_names,
             modelAuthor=model_handler._model_author,
             input_channels=inputs[0].shape[1],
             input_height=inputs[0].shape[2],
             input_width=inputs[0].shape[3],
         )
+
+    @staticmethod
+    def load_model_handlers(model_base_path):
+        onnx_files = list(model_base_path.rglob("*.onnx"))
+        log.debug(f"Found {len(onnx_files)} model files.")
+        model_handlers = {}
+        for path in onnx_files:
+            uuid = path.parent.name
+            log.debug(f"Found model file: {path} with UUID: {path.parent.name}")
+            model_handlers[uuid] = GrpcService.create_and_load_handler(uuid, path)
+        return model_handlers
+
+    @staticmethod
+    def find_model_handler(model_handler_list, uuid) -> AIModelHandler:
+        for x in model_handler_list:
+            if model_handler_list[x]._model_uuid == uuid:
+                model_handler = model_handler_list[x]
+                log.debug(f"Model info request for model_uuid: {uuid} found.")
+                return model_handler
+
+    @staticmethod
+    def create_and_load_handler(model_uuid, path) -> AIModelHandler:
+        handler = AIModelHandler(model_uuid=model_uuid)
+        handler.load_model(path)
+        return handler
+
+    @property
+    def model_handlers(self):
+        return self._model_handlers
 
 
 # --- gRPC helpers ---

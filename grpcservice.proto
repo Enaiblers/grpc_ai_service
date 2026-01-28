@@ -28,7 +28,7 @@ message ModelInfoRequest {
 message ModelInfoResponse {
   string modelAuthor = 1;
   repeated string output_names = 2;
-  string input_names = 3;
+  string input_name = 3;
   int32 input_height = 4;
   int32 input_width = 5;
   int32 input_channels = 6;
