@@ -29,13 +29,23 @@ log = logging.getLogger(__name__)
 stream_handler = logging.StreamHandler(stream=sys.stdout)
 log.addHandler(stream_handler)
 
+os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
+CONFIG = Path("config.json")
+TEMPLATE = Path("config_template.json")
 
 try:
-    with open("config.json", "r") as f:
+    with open(CONFIG, "r") as f:
         config = json.load(f)
 except FileNotFoundError as e:
-    log.error("config file not found")
-    raise e
+    log.error(f"config file not found. Error: {e}")
+    try:
+        with open("config.json", "w") as config_file:
+            config_file.write(TEMPLATE.read_text())
+        with open("config.json", "r") as f:
+            config = json.load(f)
+    except Exception as e:
+        log.error("Failed to create config from template")
+        raise e
 
 send_message_length = config["test_send_message_length"]
 receive_message_length = config["test_receive_message_length"]

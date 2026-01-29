@@ -1,7 +1,4 @@
-import json
 import logging
-import os
-from pathlib import Path
 
 import numpy as np
 from grpc import StatusCode
@@ -20,17 +17,6 @@ else:
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
-
-config_dir = os.path.dirname(os.path.realpath(__file__))
-
-try:
-    with open(f"{config_dir}/config.json", "r") as f:
-        config = json.load(f)
-except FileNotFoundError as e:
-    log.error("config file not found!")
-    raise e
-
-MODEL_BASE_PATH = Path(config["model_base_path"])
 
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
