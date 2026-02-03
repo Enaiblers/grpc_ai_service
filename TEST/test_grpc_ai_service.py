@@ -47,8 +47,8 @@ except FileNotFoundError as e:
         log.error("Failed to create config from template")
         raise e
 
-send_message_length = config["test_send_message_length"]
-receive_message_length = config["test_receive_message_length"]
+send_message_length = config["max_send_message_length"]
+receive_message_length = config["max_receive_message_length"]
 
 TEST_MODEL_BASE_PATH = Path(os.path.dirname(os.path.realpath(__file__)))
 

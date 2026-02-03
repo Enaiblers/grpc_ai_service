@@ -18,6 +18,8 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
+class GrpcStatusUnavailableError(Exception):
+    pass
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
     def __init__(self, model_base_path):
@@ -78,7 +80,6 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
         for x in model_handler_list:
             if model_handler_list[x]._model_uuid == uuid:
                 model_handler = model_handler_list[x]
-                log.debug(f"Model info request for model_uuid: {uuid} found.")
                 return model_handler
 
     @staticmethod

@@ -30,10 +30,6 @@ class AIModelHandler:
             self._model_author = self._model.get_modelmeta().custom_metadata_map[
                 "author"
             ]
-            opts = ort.SessionOptions()
-            opts.intra_op_num_threads = 3
-            opts.inter_op_num_threads = 3
-            opts.enable_cpu_mem_arena = False
         except KeyError:
             self._model_author = "default"
             log.debug("Could not find model author in metadata, setting default author")
