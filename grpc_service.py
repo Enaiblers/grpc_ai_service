@@ -18,8 +18,10 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
+
 class GrpcStatusUnavailableError(Exception):
     pass
+
 
 class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
     def __init__(self, model_base_path):
