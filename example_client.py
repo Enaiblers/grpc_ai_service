@@ -1,3 +1,6 @@
+import json
+import logging
+import os
 from pathlib import Path
 
 import cv2
@@ -7,14 +10,27 @@ import grpcservice_pb2 as grpcservice_pb2
 import grpcservice_pb2_grpc as grpcservice_pb2_grpc
 import numpy as np
 
-# Specify grpc message length
-send_message_length = 10485760
-receive_message_length = 10485760
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())
+log.setLevel(logging.DEBUG)
 
-model_uuid = "model_UUID"  # Example uuid
+config_dir = os.path.dirname(os.path.realpath(__file__))
+
+try:
+    with open(f"{config_dir}/config.json", "r") as f:
+        config = json.load(f)
+except FileNotFoundError as e:
+    log.error("config file not found")
+    raise e
+
+# Specify grpc message length
+send_message_length = config["max_send_message_length"]
+receive_message_length = config["max_receive_message_length"]
+
+model_uuid = str("uuid_1")  # Example uuid
 
 grpc_channel = grpc.insecure_channel(
-    "localhost:50051",
+    f"localhost:{config['grpc_service_port']}",
     options=[
         ("grpc.max_send_message_length", send_message_length),
         (
@@ -23,7 +39,7 @@ grpc_channel = grpc.insecure_channel(
         ),
     ],
 )
-print("Grpc client created on port 50051")
+print(f"Grpc client created on port {config['grpc_service_port']}")
 stub = grpcservice_pb2_grpc.GrpcServiceStub(grpc_channel)
 
 

@@ -50,10 +50,10 @@ def serve():
 
     def handle_sigterm(*_: Any) -> None:
         health_servicer.set(SERVICE_NAME, health_pb2.HealthCheckResponse.NOT_SERVING)
-        server.stop(30)
+        server.stop(int(config["graceful_shutdown_timeout_seconds"]))
 
     # Start Server
-    server.add_insecure_port("[::]:50051")
+    server.add_insecure_port(f"[::]:{config['grpc_service_port']}")
     server.start()
 
     signal.signal(signal.SIGTERM, handle_sigterm)
