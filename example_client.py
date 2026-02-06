@@ -30,7 +30,7 @@ receive_message_length = config["max_receive_message_length"]
 model_uuid = str("uuid_1")  # Example uuid
 
 grpc_channel = grpc.insecure_channel(
-    f"localhost:{config['grpc_service_port']}",
+    config["grpc_service_url"],
     options=[
         ("grpc.max_send_message_length", send_message_length),
         (

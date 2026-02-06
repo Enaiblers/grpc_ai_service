@@ -98,7 +98,10 @@ sudo ./add_grpc_service.sh $PWD/__main__.py $USER
 {
     "model_base_path": "", 
     "service_name": "grpcservice.GrpcService",
-    "max_send_message_length": 10485760, # 10Mb
+    "grpc_service_port" : "",
+    "grpc_service_url" : "", 
+    "graceful_shutdown_timeout_seconds": 30,
+    "max_send_message_length": 10485760, 
     "max_receive_message_length": 10485760
 }
 

@@ -57,7 +57,7 @@ def serve():
     server.start()
 
     signal.signal(signal.SIGTERM, handle_sigterm)
-    log.info("GRPC server running")
+    log.info(f"GRPC server running on port {config['grpc_service_port']}")
 
     server.wait_for_termination()
 
