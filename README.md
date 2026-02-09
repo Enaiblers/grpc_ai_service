@@ -113,3 +113,24 @@ sudo ./add_grpc_service.sh $PWD/__main__.py $USER
 ```
 pytest TEST/test_grpc_ai_service.py
 ```
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). This is required because the project uses Ultralytics, which is licensed under AGPL-3.0.
+See [LICENSE](LICENSE)
+
+### Ultralytics Usage
+
+This project uses Ultralytics (YOLO) for model loading and export.  
+Inference at runtime is performed using ONNX Runtime.
+
+### AGPL Network Use Notice
+
+If you run this gRPC service and allow users to interact with it over a network,
+you must make the complete corresponding source code of the service available
+to those users, as required by Section 13 of the AGPL.
+
+### Model Files
+
+This repository contains `.pt` and `.onnx` model files for testing
+and demonstration purposes. Unless otherwise stated, these model files are provided solely as example artifacts for use with this project. They are not intended for production use. Users are responsible for ensuring they have the right to use any model files in their own applications.

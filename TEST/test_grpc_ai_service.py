@@ -1,5 +1,18 @@
 """
-Contains tests for grpc ai service
+Copyright (C) 2026  Enaiblers AB
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import json
@@ -32,6 +45,7 @@ log.addHandler(stream_handler)
 os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
 CONFIG = Path("config.json")
 TEMPLATE = Path("config_template.json")
+TEST_IMAGE = Path("TEST/data/dog.jpg")
 
 try:
     with open(CONFIG, "r") as f:
@@ -126,7 +140,7 @@ def test_load_model_info(grpc_client):
 # Test if infer is run
 def test_infer(grpc_client):
     stub = grpc_client
-    image_path = str(Path("TEST/data/dogs.jpg"))
+    image_path = str(TEST_IMAGE)
     img = cv2.imread(image_path)
     img = cv2.resize(img, (640, 640))
     img = img.astype(np.float32) / 255.0

@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Enaiblers AB
+# SPDX-License-Identifier: AGPL-3.0-or-later
 import json
 import logging
 import os
@@ -51,7 +53,7 @@ def get_model_info():
 
 
 def run_infer():
-    image_path = str(Path("TEST/data/dogs.jpg"))
+    image_path = str(Path("TEST/data/dog.jpg"))
     img = cv2.imread(image_path)
     img = cv2.resize(img, (640, 640))
     img = img.astype(np.float32) / 255.0

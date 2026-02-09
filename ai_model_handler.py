@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Enaiblers AB
+# SPDX-License-Identifier: AGPL-3.0-or-later
 import logging
 from pathlib import Path
 
