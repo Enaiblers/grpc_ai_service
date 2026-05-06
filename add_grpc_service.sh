@@ -8,13 +8,15 @@ if [ -z "$SUDO_USER" ]; then
     echo "$0"": Please run with 'sudo'"
     exit 1
 fi
+NOSUDO="sudo -E -u $SUDO_USER -H"
 
 echo "Installing dependencies..."
-pip3 install grpcio grpcio-health-checking protobuf grpcio-tools
+
+$NOSUDO python3.12 -m pip install grpcio grpcio-health-checking protobuf grpcio-tools
 
 SVCNAME="grpc_ai_model.service"
 DST_UNIT1="/etc/systemd/system/$SVCNAME"
-ExecStart="/home/grpc_ai_service/__main__.py"
+ExecStart="/home/microscope/microAeye/AI/grpc_ai_service/__main__.py"
 User=$USER
 
 if [ ! $1 == "" ]; then 
@@ -32,7 +34,7 @@ Description=grpc AI model service app
 [Service]
 User=$User
 Group=$User
-ExecStart=/usr/local/bin/python3.9 $ExecStart
+ExecStart=/usr/bin/python3.12 $ExecStart
 Restart=on-failure
 RestartSec=10s
 KillMode=process
