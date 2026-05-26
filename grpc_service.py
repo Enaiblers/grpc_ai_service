@@ -83,6 +83,18 @@ class GrpcService(grpcservice_pb2_grpc.GrpcServiceServicer):
             input_width=inputs[0].shape[3],
         )
 
+    def ReloadModels(self, request, context):
+        updated_handlers = self.load_model_handlers(self._model_base_path)
+        for k, v in self._model_handlers.items():
+            if k not in updated_handlers:
+                self._model_handlers.pop(k)
+
+        for k, v in updated_handlers.items():
+            if k not in self._model_handlers:
+                self._model_handlers.update({k: v})
+
+        return grpcservice_pb2.ReloadModelsResponse(reloadStatus=True)
+
     @staticmethod
     def load_model_handlers(model_base_path):
         onnx_files = list(model_base_path.rglob("*.onnx"))

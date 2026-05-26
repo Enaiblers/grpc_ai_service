@@ -35,7 +35,7 @@ message ModelInfoResponse {
   int32 input_height = 4;
   int32 input_width = 5;
   int32 input_channels = 6;
-  }
+}
 
 message LoadModelRequest {
   string modelPath = 1;
@@ -45,8 +45,16 @@ message LoadModelResponse {
   bool loadStatus = 1;
 }
 
+message ReloadModelsRequest {
+}
+
+message ReloadModelsResponse {
+  bool reloadStatus = 1;
+}
+
 service GrpcService {
   rpc LoadModel(LoadModelRequest) returns (LoadModelResponse);
   rpc GetModelInfo(ModelInfoRequest) returns (ModelInfoResponse);
   rpc Run (RunRequest) returns (RunResponse);
+  rpc ReloadModels (ReloadModelsRequest) returns (ReloadModelsResponse);
 }
