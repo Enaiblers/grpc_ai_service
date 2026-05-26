@@ -18,13 +18,20 @@ class NDArray(_message.Message):
     data: bytes
     shape: _containers.RepeatedScalarFieldContainer[int]
     dtype: str
-    def __init__(self, data: _Optional[bytes] = ..., shape: _Optional[_Iterable[int]] = ..., dtype: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        data: _Optional[bytes] = ...,
+        shape: _Optional[_Iterable[int]] = ...,
+        dtype: _Optional[str] = ...,
+    ) -> None: ...
 
 class NDArrayList(_message.Message):
     __slots__ = ("arr",)
     ARR_FIELD_NUMBER: _ClassVar[int]
     arr: _containers.RepeatedCompositeFieldContainer[NDArray]
-    def __init__(self, arr: _Optional[_Iterable[_Union[NDArray, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self, arr: _Optional[_Iterable[_Union[NDArray, _Mapping]]] = ...
+    ) -> None: ...
 
 class RunRequest(_message.Message):
     __slots__ = ("model_uuid", "input", "run_options")
@@ -34,7 +41,12 @@ class RunRequest(_message.Message):
     model_uuid: str
     input: NDArray
     run_options: bytes
-    def __init__(self, model_uuid: _Optional[str] = ..., input: _Optional[_Union[NDArray, _Mapping]] = ..., run_options: _Optional[bytes] = ...) -> None: ...
+    def __init__(
+        self,
+        model_uuid: _Optional[str] = ...,
+        input: _Optional[_Union[NDArray, _Mapping]] = ...,
+        run_options: _Optional[bytes] = ...,
+    ) -> None: ...
 
 class RunResponse(_message.Message):
     __slots__ = ("output", "output_names")
@@ -42,7 +54,11 @@ class RunResponse(_message.Message):
     OUTPUT_NAMES_FIELD_NUMBER: _ClassVar[int]
     output: NDArrayList
     output_names: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, output: _Optional[_Union[NDArrayList, _Mapping]] = ..., output_names: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(
+        self,
+        output: _Optional[_Union[NDArrayList, _Mapping]] = ...,
+        output_names: _Optional[_Iterable[str]] = ...,
+    ) -> None: ...
 
 class ModelInfoRequest(_message.Message):
     __slots__ = ("model_uuid",)
@@ -51,7 +67,14 @@ class ModelInfoRequest(_message.Message):
     def __init__(self, model_uuid: _Optional[str] = ...) -> None: ...
 
 class ModelInfoResponse(_message.Message):
-    __slots__ = ("modelAuthor", "output_names", "input_name", "input_height", "input_width", "input_channels")
+    __slots__ = (
+        "modelAuthor",
+        "output_names",
+        "input_name",
+        "input_height",
+        "input_width",
+        "input_channels",
+    )
     MODELAUTHOR_FIELD_NUMBER: _ClassVar[int]
     OUTPUT_NAMES_FIELD_NUMBER: _ClassVar[int]
     INPUT_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -64,7 +87,15 @@ class ModelInfoResponse(_message.Message):
     input_height: int
     input_width: int
     input_channels: int
-    def __init__(self, modelAuthor: _Optional[str] = ..., output_names: _Optional[_Iterable[str]] = ..., input_name: _Optional[str] = ..., input_height: _Optional[int] = ..., input_width: _Optional[int] = ..., input_channels: _Optional[int] = ...) -> None: ...
+    def __init__(
+        self,
+        modelAuthor: _Optional[str] = ...,
+        output_names: _Optional[_Iterable[str]] = ...,
+        input_name: _Optional[str] = ...,
+        input_height: _Optional[int] = ...,
+        input_width: _Optional[int] = ...,
+        input_channels: _Optional[int] = ...,
+    ) -> None: ...
 
 class LoadModelRequest(_message.Message):
     __slots__ = ("modelPath",)

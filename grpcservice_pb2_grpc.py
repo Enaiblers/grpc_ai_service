@@ -12,23 +12,26 @@ else:
     # Add your custom import path here
     import AI.grpc_ai_service.grpcservice_pb2 as grpcservice__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = "1.80.0"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
 try:
     from grpc._utilities import first_version_is_lower
-    _version_not_supported = first_version_is_lower(GRPC_VERSION, GRPC_GENERATED_VERSION)
+
+    _version_not_supported = first_version_is_lower(
+        GRPC_VERSION, GRPC_GENERATED_VERSION
+    )
 except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
     raise RuntimeError(
-        f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in grpcservice_pb2_grpc.py depends on'
-        + f' grpcio>={GRPC_GENERATED_VERSION}.'
-        + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
-        + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
+        f"The grpc package installed is at version {GRPC_VERSION},"
+        + " but the generated code in grpcservice_pb2_grpc.py depends on"
+        + f" grpcio>={GRPC_GENERATED_VERSION}."
+        + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
+        + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
     )
 
 
@@ -42,25 +45,29 @@ class GrpcServiceStub(object):
             channel: A grpc.Channel.
         """
         self.LoadModel = channel.unary_unary(
-            '/grpcservice.GrpcService/LoadModel',
+            "/grpcservice.GrpcService/LoadModel",
             request_serializer=grpcservice__pb2.LoadModelRequest.SerializeToString,
             response_deserializer=grpcservice__pb2.LoadModelResponse.FromString,
-            _registered_method=True)
+            _registered_method=True,
+        )
         self.GetModelInfo = channel.unary_unary(
-            '/grpcservice.GrpcService/GetModelInfo',
+            "/grpcservice.GrpcService/GetModelInfo",
             request_serializer=grpcservice__pb2.ModelInfoRequest.SerializeToString,
             response_deserializer=grpcservice__pb2.ModelInfoResponse.FromString,
-            _registered_method=True)
+            _registered_method=True,
+        )
         self.Run = channel.unary_unary(
-            '/grpcservice.GrpcService/Run',
+            "/grpcservice.GrpcService/Run",
             request_serializer=grpcservice__pb2.RunRequest.SerializeToString,
             response_deserializer=grpcservice__pb2.RunResponse.FromString,
-            _registered_method=True)
+            _registered_method=True,
+        )
         self.ReloadModels = channel.unary_unary(
-            '/grpcservice.GrpcService/ReloadModels',
+            "/grpcservice.GrpcService/ReloadModels",
             request_serializer=grpcservice__pb2.ReloadModelsRequest.SerializeToString,
             response_deserializer=grpcservice__pb2.ReloadModelsResponse.FromString,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
 
 class GrpcServiceServicer(object):
@@ -69,56 +76,58 @@ class GrpcServiceServicer(object):
     def LoadModel(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GetModelInfo(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def Run(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ReloadModels(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_GrpcServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        'LoadModel': grpc.unary_unary_rpc_method_handler(
+        "LoadModel": grpc.unary_unary_rpc_method_handler(
             servicer.LoadModel,
             request_deserializer=grpcservice__pb2.LoadModelRequest.FromString,
             response_serializer=grpcservice__pb2.LoadModelResponse.SerializeToString,
         ),
-        'GetModelInfo': grpc.unary_unary_rpc_method_handler(
+        "GetModelInfo": grpc.unary_unary_rpc_method_handler(
             servicer.GetModelInfo,
             request_deserializer=grpcservice__pb2.ModelInfoRequest.FromString,
             response_serializer=grpcservice__pb2.ModelInfoResponse.SerializeToString,
         ),
-        'Run': grpc.unary_unary_rpc_method_handler(
+        "Run": grpc.unary_unary_rpc_method_handler(
             servicer.Run,
             request_deserializer=grpcservice__pb2.RunRequest.FromString,
             response_serializer=grpcservice__pb2.RunResponse.SerializeToString,
         ),
-        'ReloadModels': grpc.unary_unary_rpc_method_handler(
+        "ReloadModels": grpc.unary_unary_rpc_method_handler(
             servicer.ReloadModels,
             request_deserializer=grpcservice__pb2.ReloadModelsRequest.FromString,
             response_serializer=grpcservice__pb2.ReloadModelsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        'grpcservice.GrpcService', rpc_method_handlers
+        "grpcservice.GrpcService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('grpcservice.GrpcService', rpc_method_handlers)
+    server.add_registered_method_handlers(
+        "grpcservice.GrpcService", rpc_method_handlers
+    )
 
 
 # This class is part of an EXPERIMENTAL API.
@@ -136,12 +145,12 @@ class GrpcService(object):
         compression=None,
         wait_for_ready=None,
         timeout=None,
-        metadata=None
+        metadata=None,
     ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/grpcservice.GrpcService/LoadModel',
+            "/grpcservice.GrpcService/LoadModel",
             grpcservice__pb2.LoadModelRequest.SerializeToString,
             grpcservice__pb2.LoadModelResponse.FromString,
             options,
@@ -152,7 +161,8 @@ class GrpcService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
     def GetModelInfo(
@@ -165,12 +175,12 @@ class GrpcService(object):
         compression=None,
         wait_for_ready=None,
         timeout=None,
-        metadata=None
+        metadata=None,
     ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/grpcservice.GrpcService/GetModelInfo',
+            "/grpcservice.GrpcService/GetModelInfo",
             grpcservice__pb2.ModelInfoRequest.SerializeToString,
             grpcservice__pb2.ModelInfoResponse.FromString,
             options,
@@ -181,7 +191,8 @@ class GrpcService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
     def Run(
@@ -194,12 +205,12 @@ class GrpcService(object):
         compression=None,
         wait_for_ready=None,
         timeout=None,
-        metadata=None
+        metadata=None,
     ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/grpcservice.GrpcService/Run',
+            "/grpcservice.GrpcService/Run",
             grpcservice__pb2.RunRequest.SerializeToString,
             grpcservice__pb2.RunResponse.FromString,
             options,
@@ -210,7 +221,8 @@ class GrpcService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
     def ReloadModels(
@@ -223,12 +235,12 @@ class GrpcService(object):
         compression=None,
         wait_for_ready=None,
         timeout=None,
-        metadata=None
+        metadata=None,
     ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/grpcservice.GrpcService/ReloadModels',
+            "/grpcservice.GrpcService/ReloadModels",
             grpcservice__pb2.ReloadModelsRequest.SerializeToString,
             grpcservice__pb2.ReloadModelsResponse.FromString,
             options,
@@ -239,4 +251,5 @@ class GrpcService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
